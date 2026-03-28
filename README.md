@@ -118,6 +118,9 @@ VITE_API_BASE_URL=http://localhost:5000/api/v1
 ### Users
 
 - `GET /api/v1/users`
+- `GET /api/v1/users/summary`
+- `POST /api/v1/users/admins`
+- `DELETE /api/v1/users/:id`
 
 ## Business Rules
 
@@ -134,6 +137,58 @@ Swagger UI is available at:
 ```text
 http://localhost:5000/api/docs
 ```
+
+## Deployment
+
+### Recommended Setup
+
+- Deploy `backend` as a Node web service on Render.
+- Deploy `frontend` as a static Vite app on Vercel.
+
+### Backend on Render
+
+Use the [`backend`](C:/Users/91965/Desktop/Assigment/backend) folder with:
+
+- Build command: `npm install`
+- Start command: `npm start`
+
+Set these environment variables:
+
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_strong_secret
+JWT_EXPIRES_IN=1d
+CLIENT_URL=https://your-frontend-domain.vercel.app,http://localhost:5173
+```
+
+After deployment, your API base URL will look like:
+
+```text
+https://your-backend-service.onrender.com/api/v1
+```
+
+### Frontend on Vercel
+
+Use the [`frontend`](C:/Users/91965/Desktop/Assigment/frontend) folder with:
+
+- Framework preset: `Vite`
+- Build command: `npm run build`
+- Output directory: `dist`
+
+Set this environment variable:
+
+```env
+VITE_API_BASE_URL=https://your-backend-service.onrender.com/api/v1
+```
+
+### Integration Checklist
+
+1. Deploy the backend first and copy its live URL.
+2. Set `VITE_API_BASE_URL` in the frontend deployment to that backend URL plus `/api/v1`.
+3. Set `CLIENT_URL` in the backend deployment to the frontend domain.
+4. Redeploy both services after updating env vars.
+5. Verify `https://your-backend-service.onrender.com/health` and then test login from the live frontend.
 
 ## Postman Collection
 
